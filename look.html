@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Word Frequency Lookup</title>
+</head>
+<body>
+<div id="result">Loading...</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const word = params.get("q")?.toLowerCase();
+  const resultDiv = document.getElementById("result");
+
+  if (!word) {
+    resultDiv.innerText = "No word provided.";
+  } else {
+    fetch("words.json")
+      .then(res => res.json())
+      .then(data => {
+        const rank = data[word];
+        if(rank){
+          const percentage = ((rank / 50000) * 100).toFixed(2);
+          resultDiv.innerHTML = `<strong>${word}</strong><br>Rank: ${rank}<br>Top ${percentage}%`;
+        } else {
+          resultDiv.innerHTML = `<strong>${word}</strong><br>Not in top 50K`;
+        }
+      });
+  }
+</script>
+</body>
+</html>

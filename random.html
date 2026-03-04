@@ -2,45 +2,102 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Random Word</title>
 
 <style>
+  * {
+    box-sizing: border-box;
+  }
+
   body {
-    font-family: Arial, sans-serif;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #1f2937, #111827);
+    color: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
     padding: 20px;
   }
 
+  .card {
+    background: #1e293b;
+    padding: 40px 30px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
   .word {
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    word-wrap: break-word;
   }
 
   .rank-container {
     font-weight: bold;
     line-height: 1.1;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   .k-part {
-    font-size: 48px;
-    color: #cc7722;
+    font-size: 56px;
+    color: #f59e0b;
   }
 
   .rest-part {
-    font-size: 24px;
+    font-size: 26px;
+    color: #e5e7eb;
   }
 
   button {
-    padding: 8px 16px;
+    width: 100%;
+    padding: 14px;
     font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
     cursor: pointer;
+    background: #f59e0b;
+    color: #111827;
+    transition: all 0.2s ease;
+  }
+
+  button:hover {
+    background: #fbbf24;
+    transform: translateY(-2px);
+  }
+
+  button:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    .word {
+      font-size: 28px;
+    }
+
+    .k-part {
+      font-size: 44px;
+    }
+
+    .rest-part {
+      font-size: 22px;
+    }
   }
 </style>
 </head>
 
 <body>
 
-<div id="container">Loading...</div>
+<div class="card" id="container">
+  Loading...
+</div>
 
 <script>
   const container = document.getElementById("container");

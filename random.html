@@ -132,7 +132,7 @@
 
   function getRandomWord(data) {
     const filtered = Object.entries(data)
-      .filter(([word, rank]) => rank >= 10000 && rank <= 20000);
+      .filter(([word, rank]) => rank >= 10000 && rank <= 16000);
 
     if (filtered.length === 0) return null;
 
@@ -169,3 +169,4 @@
 
 </body>
 </html>
+

@@ -1,234 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Definition Game</title>
 
-<title>Word Definition Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 
+/* THEME VARIABLES */
+
 :root{
+--bg:#0f1117;
+--card:#161b22;
+--text:#e6edf3;
 
---bg:#0b0f1a;
---card:#12182a;
---text:#e6ecff;
+--neon:#00f5ff;
+--neon2:#ff2bd6;
 
---neon:#00f7ff;
---neon2:#ff2cff;
-
---correct:#22ff88;
---wrong:#ff3c5f;
-
---button:#1e2642;
-
+--soft:#9aa4b2;
 }
 
-.light{
-
---bg:#f3f6ff;
+body.light{
+--bg:#f4f6fb;
 --card:#ffffff;
---text:#1a2238;
+--text:#1f2933;
 
 --neon:#0066ff;
---neon2:#7c3cff;
+--neon2:#b400ff;
 
---button:#e6ebff;
-
+--soft:#667085;
 }
+
+/* RESET */
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+/* BODY */
 
 body{
 
-margin:0;
-font-family:system-ui;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+
 background:var(--bg);
 color:var(--text);
 
-display:flex;
-justify-content:center;
-align-items:center;
-
 min-height:100vh;
-padding:20px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+padding:16px;
 
 }
+
+/* CARD */
 
 .container{
 
 width:100%;
-max-width:600px;
-
-}
-
-.card{
+max-width:420px;
 
 background:var(--card);
 
-border-radius:20px;
-padding:28px;
+border-radius:18px;
+
+padding:26px;
 
 box-shadow:
-0 0 20px rgba(0,247,255,.15),
-0 0 40px rgba(255,44,255,.08);
+0 0 20px rgba(0,245,255,.08),
+0 10px 35px rgba(0,0,0,.45);
 
 }
 
-.top{
+/* HEADER */
+
+.header{
 
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:15px;
 
+margin-bottom:16px;
+
+}
+
+.title{
+font-size:13px;
+letter-spacing:1px;
+text-transform:uppercase;
+color:var(--soft);
 }
 
 .score{
-
-font-weight:bold;
-font-size:18px;
-
-}
-
-.theme{
-
-cursor:pointer;
-padding:8px 12px;
-border-radius:10px;
-background:var(--button);
-
-}
-
-.rank{
-
-font-size:32px;
 font-weight:700;
-text-align:center;
-margin-bottom:10px;
-
-}
-
-.rank span{
-
 color:var(--neon);
-
 }
+
+/* WORD */
 
 .word{
 
-font-size:42px;
+font-size:34px;
 font-weight:800;
-text-align:center;
-margin-bottom:25px;
 
-letter-spacing:1px;
+text-align:center;
+
+margin:20px 0;
+
+text-shadow:0 0 12px rgba(0,245,255,.4);
 
 }
+
+/* OPTIONS */
 
 .options{
 
 display:flex;
 flex-direction:column;
-gap:14px;
+
+gap:12px;
+
+margin-top:10px;
 
 }
 
 .option{
 
-padding:16px;
+background:rgba(255,255,255,.04);
+
 border-radius:12px;
+
+padding:14px;
+
 cursor:pointer;
 
-border:2px solid transparent;
+border:1px solid rgba(255,255,255,.06);
 
-background:var(--button);
-
-transition:.2s;
+transition:all .15s;
 
 }
 
 .option:hover{
 
-transform:translateY(-2px);
+border-color:var(--neon);
+
+box-shadow:0 0 10px rgba(0,245,255,.3);
 
 }
 
-.correct{
+.option.correct{
 
-border:2px solid var(--correct);
-
-box-shadow:0 0 12px var(--correct);
-
-}
-
-.wrong{
-
-border:2px solid var(--wrong);
-
-box-shadow:0 0 12px var(--wrong);
+border-color:#00ff9c;
+box-shadow:0 0 14px #00ff9c;
 
 }
 
-.result{
+.option.wrong{
 
-text-align:center;
-
-}
-
-.finalWord{
-
-font-weight:700;
-margin-top:12px;
+border-color:#ff3c6f;
+box-shadow:0 0 14px #ff3c6f;
 
 }
 
-.definitions{
+/* THEME BUTTON */
 
-margin-top:15px;
-text-align:left;
+.theme-btn{
 
-}
+background:none;
+border:1px solid rgba(255,255,255,.15);
+color:var(--text);
 
-.definitions div{
+border-radius:8px;
 
-margin-bottom:10px;
+padding:6px 10px;
 
-}
-
-.retry{
-
-margin-top:25px;
-
-background:linear-gradient(45deg,var(--neon),var(--neon2));
-
-color:#000;
-
-border:none;
-
-padding:14px 22px;
-
-font-weight:bold;
-
-border-radius:14px;
+font-size:12px;
 
 cursor:pointer;
-
-font-size:16px;
-
-}
-
-@media (max-width:600px){
-
-.word{
-
-font-size:34px;
-
-}
-
-.rank{
-
-font-size:24px;
-
-}
 
 }
 
@@ -239,235 +193,188 @@ font-size:24px;
 
 <div class="container">
 
-<div class="card">
+<div class="header">
 
-<div class="top">
+<div class="title">Definition Game</div>
 
-<div class="score">Score: <span id="score">0</span></div>
+<div>
 
-<div class="theme" onclick="toggleTheme()">🌙</div>
+<span class="score">Score: <span id="score">0</span></span>
 
-</div>
-
-<div id="game">
-
-<div class="rank" id="rank"></div>
-
-<div class="word" id="word"></div>
-
-<div class="options" id="options"></div>
-
-</div>
-
-<div id="result" class="result" style="display:none">
-
-<h2 id="resultWord"></h2>
-
-<div class="finalWord" id="finalWord"></div>
-
-<div class="definitions" id="definitions"></div>
-
-<div style="margin-top:15px">Score: <b id="finalScore"></b></div>
-
-<button class="retry" onclick="restart()">Retry</button>
+<button class="theme-btn" onclick="toggleTheme()">☀︎/🌙</button>
 
 </div>
 
 </div>
+
+<div id="word" class="word">Loading...</div>
+
+<div id="options" class="options"></div>
 
 </div>
 
 <script>
 
-let words=[]
-let definitions=[]
+const MIN_RANK = 10000;
+const MAX_RANK = 15000;
 
-let currentWord=null
-let score=0
+let wordsData = {};
+let definitions = [];
 
-const MIN=10000
-const MAX=15000
+let filteredWords = [];
+
+let score = 0;
 
 async function init(){
 
-const w=await fetch("../words.json")
-words=await w.json()
+const wordsResponse = await fetch("words.json");
+wordsData = await wordsResponse.json();
 
-const d=await fetch("../definitions.json")
-definitions=await d.json()
+const defsResponse = await fetch("definitions.json");
+definitions = await defsResponse.json();
 
-nextWord()
+filteredWords = Object.entries(wordsData)
+.filter(([word,rank]) => rank >= MIN_RANK && rank <= MAX_RANK);
 
-}
-
-function formatRank(num){
-
-const thousands=Math.floor(num/1000)
-const rest=num%1000
-
-return `${thousands}K <span>${rest}</span>`
+nextRound();
 
 }
 
-function randomIndex(){
+function getRandom(arr){
 
-return Math.floor(Math.random()*(MAX-MIN))+MIN
+return arr[Math.floor(Math.random()*arr.length)];
 
 }
 
-function nextWord(){
+function shuffle(array){
 
-document.getElementById("result").style.display="none"
-document.getElementById("game").style.display="block"
+for(let i=array.length-1;i>0;i--){
 
-let i=randomIndex()
+const j=Math.floor(Math.random()*(i+1));
 
-currentWord=words[i]
+[array[i],array[j]]=[array[j],array[i]];
 
-document.getElementById("rank").innerHTML=formatRank(i)
-document.getElementById("word").innerText=currentWord
+}
 
-generateOptions(currentWord)
+return array;
 
 }
 
 function findDefinition(word){
 
-return definitions.find(d=>d.searched_word===word)
+word = word.toUpperCase();
+
+return definitions.find(d=>d.searched_word===word);
 
 }
 
-function generateOptions(word){
+function getRandomWrongDefinitions(correctWord){
 
-let correct=findDefinition(word)
+let wrong=[];
 
-if(!correct){
+while(wrong.length<3){
 
-nextWord()
-return
+let candidate=getRandom(definitions);
 
-}
+if(candidate.searched_word!==correctWord){
 
-let options=[correct.definition[0]]
-
-while(options.length<4){
-
-let rand=definitions[Math.floor(Math.random()*definitions.length)]
-
-let def=rand.definition[0]
-
-if(!options.includes(def)){
-
-options.push(def)
+wrong.push(candidate);
 
 }
 
 }
 
-options=options.sort(()=>Math.random()-0.5)
-
-renderOptions(options,correct.definition)
+return wrong;
 
 }
 
-function renderOptions(options,correctDefs){
+function nextRound(){
 
-const container=document.getElementById("options")
+const randomWord = getRandom(filteredWords);
 
-container.innerHTML=""
+const word = randomWord[0];
 
-options.forEach(def=>{
+document.getElementById("word").textContent = word;
 
-let div=document.createElement("div")
+const correctEntry = findDefinition(word);
 
-div.className="option"
-div.innerText=def
+if(!correctEntry){
 
-div.onclick=()=>choose(div,def,correctDefs)
-
-container.appendChild(div)
-
-})
+nextRound();
+return;
 
 }
 
-function choose(el,def,correctDefs){
+const correctDefinition = correctEntry.definition[0];
 
-let all=document.querySelectorAll(".option")
+const wrongEntries = getRandomWrongDefinitions(word);
 
-all.forEach(o=>o.onclick=null)
+const options = [
+{ text: correctDefinition, correct:true },
+...wrongEntries.map(w=>({ text:w.definition[0], correct:false }))
+];
 
-if(correctDefs.includes(def)){
+shuffle(options);
 
-el.classList.add("correct")
+renderOptions(options);
 
-score++
-document.getElementById("score").innerText=score
+}
 
-setTimeout(nextWord,900)
+function renderOptions(options){
+
+const container=document.getElementById("options");
+
+container.innerHTML="";
+
+options.forEach(opt=>{
+
+const div=document.createElement("div");
+
+div.className="option";
+
+div.textContent=opt.text;
+
+div.onclick=()=>selectOption(div,opt.correct);
+
+container.appendChild(div);
+
+});
+
+}
+
+function selectOption(element,correct){
+
+const options=document.querySelectorAll(".option");
+
+options.forEach(o=>o.onclick=null);
+
+if(correct){
+
+element.classList.add("correct");
+
+score++;
 
 }else{
 
-el.classList.add("wrong")
+element.classList.add("wrong");
 
-all.forEach(o=>{
-
-if(correctDefs.includes(o.innerText)){
-
-o.classList.add("correct")
+score=0;
 
 }
 
-})
+document.getElementById("score").textContent=score;
 
-setTimeout(showResult,1200)
-
-}
-
-}
-
-function showResult(){
-
-const entry=findDefinition(currentWord)
-
-document.getElementById("game").style.display="none"
-document.getElementById("result").style.display="block"
-
-document.getElementById("resultWord").innerText=currentWord
-
-document.getElementById("finalWord").innerText=entry.final_word
-
-const defs=document.getElementById("definitions")
-defs.innerHTML=""
-
-entry.definition.forEach(d=>{
-
-let div=document.createElement("div")
-div.innerHTML="• "+d
-defs.appendChild(div)
-
-})
-
-document.getElementById("finalScore").innerText=score
-
-score=0
-document.getElementById("score").innerText=0
-
-}
-
-function restart(){
-
-nextWord()
+setTimeout(nextRound,1200);
 
 }
 
 function toggleTheme(){
 
-document.body.classList.toggle("light")
+document.body.classList.toggle("light");
 
 }
 
-init()
+init();
 
 </script>
 

@@ -8,7 +8,7 @@
 
 <style>
 
-/* ---------- THEME VARIABLES ---------- */
+/* THEME VARIABLES */
 
 :root{
 
@@ -18,13 +18,12 @@
 
 --neon:#00f5ff;
 --neon2:#ff2bd6;
---accent:#ff7a18;
 
 --soft:#9aa4b2;
 
 }
 
-/* LIGHT MODE */
+/* LIGHT THEME */
 
 body.light{
 
@@ -34,7 +33,6 @@ body.light{
 
 --neon:#0066ff;
 --neon2:#b400ff;
---accent:#ff7a18;
 
 --soft:#667085;
 
@@ -80,7 +78,7 @@ background:var(--card);
 
 border-radius:18px;
 
-padding:28px 22px 26px 22px;
+padding:28px 22px 26px;
 
 box-shadow:
 0 0 20px rgba(0,245,255,.08),
@@ -151,10 +149,10 @@ text-shadow:0 0 12px rgba(0,245,255,.3);
 /* RANK */
 
 .rank{
-margin-bottom:22px;
+margin-bottom:24px;
 }
 
-/* BIG K PART */
+/* THOUSANDS PART */
 
 .k-part{
 
@@ -169,16 +167,20 @@ text-shadow:
 
 }
 
-/* SMALL PART */
+/* REMAINDER PART */
 
 .rest-part{
 
 font-size:24px;
-font-weight:700;
+font-weight:800;
 
-margin-left:4px;
+margin-left:6px;
 
-color:var(--text);
+color:var(--neon2);
+
+text-shadow:
+0 0 6px var(--neon2),
+0 0 14px rgba(255,43,214,.7);
 
 }
 
@@ -190,11 +192,13 @@ background:rgba(255,255,255,.03);
 
 border-radius:14px;
 
-padding:18px 16px;
+padding:20px 18px;
 
-margin-bottom:24px;
+margin-bottom:26px;
 
-border:1px solid rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.06);
+
+text-align:left;
 
 }
 
@@ -203,20 +207,41 @@ border:1px solid rgba(255,255,255,.05);
 .final-word{
 
 font-weight:700;
-margin-bottom:8px;
+margin-bottom:12px;
 
 color:var(--neon2);
 
+font-size:16px;
+
 }
 
-/* DEFINITION */
+/* DEFINITIONS */
 
 .definition{
 
 font-size:15px;
 line-height:1.6;
-margin:6px 0;
+
+margin:10px 0;
+
+display:flex;
+gap:8px;
+
 color:var(--text);
+
+}
+
+/* BULLET MARKER */
+
+.definition::before{
+
+content:"◆";
+
+color:var(--neon2);
+
+font-size:12px;
+
+margin-top:6px;
 
 }
 
@@ -246,7 +271,6 @@ background:linear-gradient(
 );
 
 box-shadow:
-
 0 0 10px rgba(0,245,255,.8),
 0 0 20px rgba(255,43,214,.5),
 0 6px 20px rgba(0,0,0,.5);
@@ -262,7 +286,6 @@ button:hover{
 transform:translateY(-2px);
 
 box-shadow:
-
 0 0 14px rgba(0,245,255,1),
 0 0 28px rgba(255,43,214,.7);
 
@@ -271,9 +294,7 @@ box-shadow:
 /* BUTTON PRESS */
 
 button:active{
-
 transform:scale(.97);
-
 }
 
 /* MOBILE */
@@ -314,7 +335,7 @@ transform:scale(.97);
 <script>
 
 const MIN_RANK = 10000;
-const MAX_RANK = 11000;
+const MAX_RANK = 15000;
 
 let wordsData = {};
 let definitions = [];
@@ -399,7 +420,7 @@ const defs = entry.definition
 
 box.innerHTML = `
 <div class="final-word">
-${entry.final_word} —
+${entry.final_word} :
 </div>
 ${defs}
 `;
@@ -428,4 +449,3 @@ init();
 
 </body>
 </html>
-

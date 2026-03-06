@@ -2,99 +2,146 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Random Word</title>
+<title>Word Trainer</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 
-body{
-  font-family: Arial, sans-serif;
-  margin:0;
-  padding:30px 20px;
-  background:#fafafa;
-  display:flex;
-  justify-content:center;
+/* RESET */
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
+
+/* BODY */
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+background:linear-gradient(180deg,#f8f9fb,#eef2f7);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:16px;
+}
+
+/* MAIN CARD */
 
 .container{
-  max-width:520px;
-  width:100%;
-  text-align:center;
+width:100%;
+max-width:420px;
+background:white;
+border-radius:18px;
+padding:26px 22px 28px 22px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+text-align:center;
 }
+
+/* TITLE */
+
+.title{
+font-size:13px;
+letter-spacing:1px;
+text-transform:uppercase;
+color:#8892a0;
+margin-bottom:12px;
+}
+
+/* WORD */
 
 .word{
-  font-size:38px;
-  font-weight:700;
-  margin-bottom:10px;
-  color:#222;
+font-size:34px;
+font-weight:800;
+letter-spacing:1px;
+color:#1f2933;
+margin-bottom:12px;
 }
 
+/* RANK */
+
 .rank{
-  margin-bottom:25px;
+margin-bottom:20px;
 }
 
 .k-part{
-  font-size:44px;
-  font-weight:800;
-  color:#cc7722;
+font-size:42px;
+font-weight:900;
+color:#ff7a18;
 }
 
 .rest-part{
-  font-size:24px;
-  margin-left:4px;
+font-size:24px;
+font-weight:700;
+color:#374151;
+margin-left:3px;
 }
 
-.definition-box{
-  background:white;
-  border-radius:10px;
-  padding:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  text-align:left;
-  margin-bottom:25px;
+/* DEFINITION CARD */
+
+.definition-card{
+background:#f7f9fc;
+border-radius:12px;
+padding:18px 16px;
+text-align:left;
+margin-bottom:22px;
 }
+
+/* FINAL WORD */
 
 .final-word{
-  font-weight:700;
-  margin-bottom:10px;
-  color:#444;
+font-weight:700;
+font-size:16px;
+margin-bottom:8px;
+color:#2d3748;
 }
+
+/* DEFINITIONS */
 
 .definition{
-  font-size:17px;
-  line-height:1.6;
-  color:#333;
-  margin:6px 0;
+font-size:15px;
+line-height:1.6;
+color:#4a5568;
+margin:6px 0;
 }
+
+/* BUTTON */
 
 button{
-  background:#cc7722;
-  color:white;
-  border:none;
-  padding:12px 20px;
-  font-size:16px;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.2s;
+width:100%;
+border:none;
+border-radius:12px;
+padding:16px;
+font-size:17px;
+font-weight:700;
+cursor:pointer;
+
+background:linear-gradient(135deg,#ff7a18,#ffb347);
+color:white;
+
+box-shadow:0 6px 18px rgba(255,122,24,0.35);
+
+transition:all .18s ease;
 }
 
-button:hover{
-  background:#a85f1a;
+button:active{
+transform:scale(.97);
+box-shadow:0 3px 10px rgba(255,122,24,0.25);
 }
 
-@media (max-width:500px){
+/* SMALL SCREEN IMPROVEMENTS */
 
-  .word{
-    font-size:30px;
-  }
+@media (max-width:420px){
 
-  .k-part{
-    font-size:36px;
-  }
+.word{
+font-size:30px;
+}
 
-  .rest-part{
-    font-size:20px;
-  }
+.k-part{
+font-size:36px;
+}
 
 }
 
@@ -105,20 +152,22 @@ button:hover{
 
 <div class="container">
 
+<div class="title">Random Word</div>
+
 <div id="word" class="word">Loading...</div>
 
 <div id="rank" class="rank"></div>
 
-<div id="definitionBox" class="definition-box"></div>
+<div id="definitionBox" class="definition-card"></div>
 
-<button onclick="generateRandom()">New Word</button>
+<button onclick="generateRandom()">🎲 New Word</button>
 
 </div>
 
 <script>
 
 const MIN_RANK = 10000;
-const MAX_RANK = 11000;
+const MAX_RANK = 15000;
 
 let wordsData = {};
 let definitions = [];
@@ -126,84 +175,87 @@ let filteredWords = [];
 
 async function init(){
 
-  const wordsResponse = await fetch("words.json");
-  wordsData = await wordsResponse.json();
+const wordsResponse = await fetch("words.json");
+wordsData = await wordsResponse.json();
 
-  const defsResponse = await fetch("definitions.json");
-  definitions = await defsResponse.json();
+const defsResponse = await fetch("definitions.json");
+definitions = await defsResponse.json();
 
-  filteredWords = Object.entries(wordsData)
-    .filter(([word,rank]) => rank >= MIN_RANK && rank <= MAX_RANK);
+filteredWords = Object.entries(wordsData)
+.filter(([word,rank]) => rank >= MIN_RANK && rank <= MAX_RANK);
 
-  generateRandom();
+generateRandom();
+
 }
 
 function formatRank(rank){
 
-  const thousands = Math.floor(rank / 1000);
-  const remainder = rank % 1000;
+const thousands = Math.floor(rank / 1000);
+const remainder = rank % 1000;
 
-  if(remainder === 0){
-    return `
-      <span class="k-part">${thousands}K</span>
-    `;
-  }
+if(remainder === 0){
 
-  return `
-    <span class="k-part">${thousands}K</span>
-    <span class="rest-part">${remainder}</span>
-  `;
+return `
+<span class="k-part">${thousands}K</span>
+`;
+
+}
+
+return `
+<span class="k-part">${thousands}K</span>
+<span class="rest-part">${remainder}</span>
+`;
+
 }
 
 function findDefinition(word){
 
-  word = word.toUpperCase();
+word = word.toUpperCase();
 
-  for(const item of definitions){
+for(const item of definitions){
 
-    if(item.searched_word === word){
-      return item;
-    }
+if(item.searched_word === word){
+return item;
+}
 
-  }
+}
 
-  return null;
+return null;
+
 }
 
 function generateRandom(){
 
-  const randomIndex = Math.floor(Math.random() * filteredWords.length);
+const randomIndex = Math.floor(Math.random()*filteredWords.length);
 
-  const [word, rank] = filteredWords[randomIndex];
+const [word,rank] = filteredWords[randomIndex];
 
-  document.getElementById("word").textContent = word;
+document.getElementById("word").textContent = word;
 
-  document.getElementById("rank").innerHTML = formatRank(rank);
+document.getElementById("rank").innerHTML = formatRank(rank);
 
-  const entry = findDefinition(word);
+const entry = findDefinition(word);
 
-  const box = document.getElementById("definitionBox");
+const box = document.getElementById("definitionBox");
 
-  if(entry){
+if(entry){
 
-    const defs = entry.definition
-      .map(d => `<div class="definition">${d}</div>`)
-      .join("");
+const defs = entry.definition
+.map(d => `<div class="definition">${d}</div>`)
+.join("");
 
-    box.innerHTML = `
-      <div class="final-word">
-        ${entry.final_word} —
-      </div>
-      ${defs}
-    `;
+box.innerHTML = `
+<div class="final-word">
+${entry.final_word} —
+</div>
+${defs}
+`;
 
-  }else{
+}else{
 
-    box.innerHTML = `
-      <div class="definition">Definition not available</div>
-    `;
+box.innerHTML = `<div class="definition">Definition not available</div>`;
 
-  }
+}
 
 }
 
@@ -213,4 +265,3 @@ init();
 
 </body>
 </html>
-

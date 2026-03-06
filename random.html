@@ -1,304 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Word Definition Game</title>
-
+<title>Definition Game</title>
 <style>
-
 :root{
-
 --bg:#0a0f1f;
 --card:#121a30;
 --text:#e8ecff;
-
 --accent:#00f7ff;
 --accent2:#ff2cff;
-
 --correct:#20ff8c;
 --wrong:#ff476d;
-
 --button:#1c2444;
-
 }
-
 .light{
-
 --bg:#f3f6ff;
 --card:#ffffff;
 --text:#11142a;
-
 --accent:#2563ff;
 --accent2:#8b5cf6;
-
 --button:#e7ebff;
-
 }
-
 body{
-
 margin:0;
 font-family:system-ui,-apple-system,Segoe UI,Roboto;
-
 background:var(--bg);
 color:var(--text);
-
 display:flex;
 justify-content:center;
 align-items:center;
-
 min-height:100vh;
-
 padding:20px;
-
 }
-
 .app{
-
 width:100%;
 max-width:620px;
-
 }
-
 .card{
-
 background:var(--card);
 padding:28px;
-
 border-radius:18px;
-
-box-shadow:
-0 0 25px rgba(0,247,255,.15),
-0 0 50px rgba(255,44,255,.08);
-
+box-shadow:0 0 25px rgba(0,247,255,.15),0 0 50px rgba(255,44,255,.08);
 }
-
 .header{
-
 display:flex;
 justify-content:space-between;
 align-items:center;
-
 margin-bottom:20px;
-
 }
-
 .score{
-
 font-weight:700;
 font-size:18px;
-
 }
-
 .themeBtn{
-
 cursor:pointer;
 border:none;
-
 background:var(--button);
 color:var(--text);
-
 padding:8px 14px;
 border-radius:10px;
-
 }
-
 .rank{
-
 text-align:center;
 font-size:30px;
 font-weight:700;
-
 margin-bottom:10px;
-
 }
-
 .rank span{
-
 color:var(--accent);
-
 }
-
 .word{
-
 text-align:center;
 font-size:42px;
 font-weight:800;
-
 margin-bottom:24px;
-
 }
-
 .options{
-
 display:flex;
 flex-direction:column;
 gap:14px;
-
 }
-
 .option{
-
 background:var(--button);
-
 border:none;
 border-radius:12px;
-
 padding:16px;
-
 font-size:16px;
-
 cursor:pointer;
-
 border:2px solid transparent;
-
 transition:.15s;
-
 text-align:left;
-
 }
-
 .option:hover{
-
 transform:translateY(-2px);
-
 }
-
 .option.correct{
-
 border-color:var(--correct);
 box-shadow:0 0 10px var(--correct);
-
 }
-
 .option.wrong{
-
 border-color:var(--wrong);
 box-shadow:0 0 10px var(--wrong);
-
 }
-
 .result{
-
 text-align:center;
-
 }
-
 .finalWord{
-
 font-weight:700;
 margin-top:10px;
-
 }
-
 .definitions{
-
 margin-top:18px;
 text-align:left;
-
 }
-
 .definition{
-
 margin-bottom:12px;
-
 padding-left:8px;
-
 }
-
 .retryBtn{
-
 margin-top:24px;
-
 background:linear-gradient(45deg,var(--accent),var(--accent2));
-
 border:none;
-
 color:#000;
-
 font-weight:700;
-
 padding:14px 24px;
-
 border-radius:14px;
-
 cursor:pointer;
-
+font-size:16px;
 }
-
 @media(max-width:600px){
-
 .word{font-size:34px}
-
 .rank{font-size:24px}
-
 }
-
 </style>
-
 </head>
-
-
 <body>
-
 <div class="app">
-
 <div class="card">
-
 <div class="header">
-
 <div class="score">Score: <span id="score">0</span></div>
-
 <button class="themeBtn" id="themeToggle">🌙</button>
-
 </div>
-
 
 <div id="gameView">
-
 <div class="rank" id="rank"></div>
-
 <div class="word" id="word"></div>
-
 <div class="options" id="options"></div>
-
 </div>
 
-
 <div id="resultView" class="result" hidden>
-
 <h2 id="resultWord"></h2>
-
 <div class="finalWord" id="resultFinal"></div>
-
 <div class="definitions" id="resultDefinitions"></div>
-
 <div style="margin-top:16px">
 Score: <b id="resultScore"></b>
 </div>
-
 <button class="retryBtn" id="retryBtn">Retry</button>
-
 </div>
 
 </div>
-
 </div>
-
 
 <script>
-
-const GAME_RANGE = {
-min:10000,
-max:15000
-}
-
+const GAME_RANGE = {min:10000,max:15000}
 const STATE = {
-words:[],
+words:[], // will be array [[word,rank]]
 definitions:[],
 currentWord:null,
 currentEntry:null,
@@ -306,228 +174,114 @@ score:0
 }
 
 const UI = {
-
 rank:document.getElementById("rank"),
 word:document.getElementById("word"),
 options:document.getElementById("options"),
 score:document.getElementById("score"),
-
 gameView:document.getElementById("gameView"),
 resultView:document.getElementById("resultView"),
-
 resultWord:document.getElementById("resultWord"),
 resultFinal:document.getElementById("resultFinal"),
 resultDefinitions:document.getElementById("resultDefinitions"),
 resultScore:document.getElementById("resultScore"),
-
 retryBtn:document.getElementById("retryBtn"),
 themeToggle:document.getElementById("themeToggle")
-
 }
 
-
-function randomInt(min,max){
-
-return Math.floor(Math.random()*(max-min))+min
-
-}
-
-function shuffle(arr){
-
-return arr.sort(()=>Math.random()-0.5)
-
-}
-
-function formatRank(index){
-
-const thousands=Math.floor(index/1000)
-const rest=index%1000
-
-return `${thousands}K <span>${rest}</span>`
-
-}
-
-function findEntry(word){
-
-return STATE.definitions.find(
-d=>d.searched_word===word
-)
-
-}
-
-function pickRandomDefinitions(exclude){
-
-const pool = STATE.definitions
-.filter(d=>d.definition.length>0)
-.filter(d=>!exclude.includes(d.definition[0]))
-
+function randomInt(min,max){return Math.floor(Math.random()*(max-min))+min}
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5)}
+function formatRank(rank){const thousands=Math.floor(rank/1000); const rest=rank%1000; return `${thousands}K <span>${rest}</span>`}
+function findEntry(word){return STATE.definitions.find(d=>d.searched_word===word)}
+function pickRandomWrongDefs(correctDef){
+const pool=STATE.definitions.filter(d=>d.definition.length>0 && d.definition[0]!==correctDef)
 const choices=[]
-
 while(choices.length<3){
-
-const rand = pool[randomInt(0,pool.length)]
-const def = rand.definition[0]
-
-if(!choices.includes(def)) choices.push(def)
-
+const candidate=pool[randomInt(0,pool.length)]
+if(!choices.includes(candidate.definition[0])) choices.push(candidate.definition[0])
 }
-
 return choices
-
 }
 
-
-function renderOptions(definitions){
-
+function renderOptions(options){
 UI.options.innerHTML=""
-
-definitions.forEach(def=>{
-
+options.forEach(def=>{
 const btn=document.createElement("button")
-
 btn.className="option"
 btn.textContent=def
-
 btn.addEventListener("click",()=>handleAnswer(btn,def))
-
 UI.options.appendChild(btn)
-
 })
-
 }
 
-function handleAnswer(button,definition){
-
-const correctDefs = STATE.currentEntry.definition
-const allOptions=[...document.querySelectorAll(".option")]
-
-allOptions.forEach(btn=>btn.disabled=true)
-
-if(correctDefs.includes(definition)){
-
+function handleAnswer(button,def){
+const correctDefs=STATE.currentEntry.definition
+const allOpts=[...document.querySelectorAll(".option")]
+allOpts.forEach(btn=>btn.disabled=true)
+if(correctDefs.includes(def)){
 button.classList.add("correct")
-
 STATE.score++
 UI.score.textContent=STATE.score
-
 setTimeout(loadNextWord,900)
-
 }else{
-
 button.classList.add("wrong")
-
-allOptions.forEach(btn=>{
-
-if(correctDefs.includes(btn.textContent)){
-
-btn.classList.add("correct")
-
-}
-
+allOpts.forEach(btn=>{
+if(correctDefs.includes(btn.textContent)) btn.classList.add("correct")
 })
-
 setTimeout(showResultScreen,1200)
-
 }
-
 }
-
 
 function loadNextWord(){
-
 UI.resultView.hidden=true
 UI.gameView.hidden=false
-
-let index=randomInt(GAME_RANGE.min,GAME_RANGE.max)
-let word=STATE.words[index]
-
-let entry=findEntry(word)
-
-if(!entry){
-loadNextWord()
-return
-}
-
+// filter words in range
+const filtered=STATE.words.filter(([w,rank])=>rank>=GAME_RANGE.min && rank<=GAME_RANGE.max)
+const [word,rank]=filtered[randomInt(0,filtered.length)]
 STATE.currentWord=word
-STATE.currentEntry=entry
-
-UI.rank.innerHTML=formatRank(index)
+STATE.currentEntry=findEntry(word)
+if(!STATE.currentEntry){loadNextWord(); return;}
+UI.rank.innerHTML=formatRank(rank)
 UI.word.textContent=word
-
-const correctDef = entry.definition[0]
-
-const wrongDefs = pickRandomDefinitions([correctDef])
-
-const options = shuffle([correctDef,...wrongDefs])
-
-renderOptions(options)
-
+const correctDef=STATE.currentEntry.definition[0]
+const wrongDefs=pickRandomWrongDefs(correctDef)
+renderOptions(shuffle([correctDef,...wrongDefs]))
 }
-
 
 function showResultScreen(){
-
 const entry=STATE.currentEntry
-
 UI.gameView.hidden=true
 UI.resultView.hidden=false
-
 UI.resultWord.textContent=STATE.currentWord
 UI.resultFinal.textContent=entry.final_word
-
 UI.resultDefinitions.innerHTML=""
-
-entry.definition.forEach(def=>{
-
+entry.definition.forEach(d=>{
 const div=document.createElement("div")
-
 div.className="definition"
-div.textContent="• "+def
-
+div.textContent="• "+d
 UI.resultDefinitions.appendChild(div)
-
 })
-
 UI.resultScore.textContent=STATE.score
-
 STATE.score=0
 UI.score.textContent=0
-
 }
 
-function restartGame(){
-
-loadNextWord()
-
-}
-
-function toggleTheme(){
-
-document.body.classList.toggle("light")
-
-}
+function restartGame(){loadNextWord()}
+function toggleTheme(){document.body.classList.toggle("light")}
 
 async function loadData(){
-
-const [wordsRes,defRes]=await Promise.all([
-fetch("../words.json"),
-fetch("../definitions.json")
-])
-
-STATE.words=await wordsRes.json()
+const wordsRes=await fetch("words.json")
+const wordsObj=await wordsRes.json()
+// convert object to array [[word,rank]]
+STATE.words=Object.entries(wordsObj)
+const defRes=await fetch("definitions.json")
 STATE.definitions=await defRes.json()
-
 loadNextWord()
-
 }
-
 
 UI.retryBtn.addEventListener("click",restartGame)
 UI.themeToggle.addEventListener("click",toggleTheme)
 
 loadData()
-
 </script>
-
 </body>
 </html>

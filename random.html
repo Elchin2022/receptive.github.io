@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Word Definition Game</title>
 
@@ -10,17 +12,17 @@
 
 :root{
 
---bg:#0b0f1a;
---card:#12182a;
---text:#e6ecff;
+--bg:#0a0f1f;
+--card:#121a30;
+--text:#e8ecff;
 
---neon:#00f7ff;
---neon2:#ff2cff;
+--accent:#00f7ff;
+--accent2:#ff2cff;
 
---correct:#22ff88;
---wrong:#ff3c5f;
+--correct:#20ff8c;
+--wrong:#ff476d;
 
---button:#1e2642;
+--button:#1c2444;
 
 }
 
@@ -28,19 +30,20 @@
 
 --bg:#f3f6ff;
 --card:#ffffff;
---text:#1a2238;
+--text:#11142a;
 
---neon:#0066ff;
---neon2:#7c3cff;
+--accent:#2563ff;
+--accent2:#8b5cf6;
 
---button:#e6ebff;
+--button:#e7ebff;
 
 }
 
 body{
 
 margin:0;
-font-family:system-ui;
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
+
 background:var(--bg);
 color:var(--text);
 
@@ -49,78 +52,84 @@ justify-content:center;
 align-items:center;
 
 min-height:100vh;
+
 padding:20px;
 
 }
 
-.container{
+.app{
 
 width:100%;
-max-width:600px;
+max-width:620px;
 
 }
 
 .card{
 
 background:var(--card);
-
-border-radius:20px;
 padding:28px;
 
+border-radius:18px;
+
 box-shadow:
-0 0 20px rgba(0,247,255,.15),
-0 0 40px rgba(255,44,255,.08);
+0 0 25px rgba(0,247,255,.15),
+0 0 50px rgba(255,44,255,.08);
 
 }
 
-.top{
+.header{
 
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:15px;
+
+margin-bottom:20px;
 
 }
 
 .score{
 
-font-weight:bold;
+font-weight:700;
 font-size:18px;
 
 }
 
-.theme{
+.themeBtn{
 
 cursor:pointer;
-padding:8px 12px;
-border-radius:10px;
+border:none;
+
 background:var(--button);
+color:var(--text);
+
+padding:8px 14px;
+border-radius:10px;
 
 }
 
 .rank{
 
-font-size:32px;
-font-weight:700;
 text-align:center;
+font-size:30px;
+font-weight:700;
+
 margin-bottom:10px;
 
 }
 
 .rank span{
 
-color:var(--neon);
+color:var(--accent);
 
 }
 
 .word{
 
+text-align:center;
 font-size:42px;
 font-weight:800;
-text-align:center;
-margin-bottom:25px;
 
-letter-spacing:1px;
+margin-bottom:24px;
 
 }
 
@@ -134,15 +143,22 @@ gap:14px;
 
 .option{
 
-padding:16px;
+background:var(--button);
+
+border:none;
 border-radius:12px;
+
+padding:16px;
+
+font-size:16px;
+
 cursor:pointer;
 
 border:2px solid transparent;
 
-background:var(--button);
+transition:.15s;
 
-transition:.2s;
+text-align:left;
 
 }
 
@@ -152,19 +168,17 @@ transform:translateY(-2px);
 
 }
 
-.correct{
+.option.correct{
 
-border:2px solid var(--correct);
-
-box-shadow:0 0 12px var(--correct);
+border-color:var(--correct);
+box-shadow:0 0 10px var(--correct);
 
 }
 
-.wrong{
+.option.wrong{
 
-border:2px solid var(--wrong);
-
-box-shadow:0 0 12px var(--wrong);
+border-color:var(--wrong);
+box-shadow:0 0 10px var(--wrong);
 
 }
 
@@ -177,79 +191,74 @@ text-align:center;
 .finalWord{
 
 font-weight:700;
-margin-top:12px;
+margin-top:10px;
 
 }
 
 .definitions{
 
-margin-top:15px;
+margin-top:18px;
 text-align:left;
 
 }
 
-.definitions div{
+.definition{
 
-margin-bottom:10px;
+margin-bottom:12px;
+
+padding-left:8px;
 
 }
 
-.retry{
+.retryBtn{
 
-margin-top:25px;
+margin-top:24px;
 
-background:linear-gradient(45deg,var(--neon),var(--neon2));
-
-color:#000;
+background:linear-gradient(45deg,var(--accent),var(--accent2));
 
 border:none;
 
-padding:14px 22px;
+color:#000;
 
-font-weight:bold;
+font-weight:700;
+
+padding:14px 24px;
 
 border-radius:14px;
 
 cursor:pointer;
 
-font-size:16px;
-
 }
 
-@media (max-width:600px){
+@media(max-width:600px){
 
-.word{
+.word{font-size:34px}
 
-font-size:34px;
-
-}
-
-.rank{
-
-font-size:24px;
-
-}
+.rank{font-size:24px}
 
 }
 
 </style>
+
 </head>
+
 
 <body>
 
-<div class="container">
+<div class="app">
 
 <div class="card">
 
-<div class="top">
+<div class="header">
 
 <div class="score">Score: <span id="score">0</span></div>
 
-<div class="theme" onclick="toggleTheme()">🌙</div>
+<button class="themeBtn" id="themeToggle">🌙</button>
 
 </div>
 
-<div id="game">
+
+<div id="gameView">
 
 <div class="rank" id="rank"></div>
 
@@ -259,205 +268,236 @@ font-size:24px;
 
 </div>
 
-<div id="result" class="result" style="display:none">
+
+<div id="resultView" class="result" hidden>
 
 <h2 id="resultWord"></h2>
 
-<div class="finalWord" id="finalWord"></div>
+<div class="finalWord" id="resultFinal"></div>
 
-<div class="definitions" id="definitions"></div>
+<div class="definitions" id="resultDefinitions"></div>
 
-<div style="margin-top:15px">Score: <b id="finalScore"></b></div>
+<div style="margin-top:16px">
+Score: <b id="resultScore"></b>
+</div>
 
-<button class="retry" onclick="restart()">Retry</button>
+<button class="retryBtn" id="retryBtn">Retry</button>
 
 </div>
 
 </div>
 
 </div>
+
 
 <script>
 
-let words=[]
-let definitions=[]
+const GAME_RANGE = {
+min:10000,
+max:15000
+}
 
-let currentWord=null
-let score=0
+const STATE = {
+words:[],
+definitions:[],
+currentWord:null,
+currentEntry:null,
+score:0
+}
 
-const MIN=10000
-const MAX=15000
+const UI = {
 
-async function init(){
+rank:document.getElementById("rank"),
+word:document.getElementById("word"),
+options:document.getElementById("options"),
+score:document.getElementById("score"),
 
-const w=await fetch("../words.json")
-words=await w.json()
+gameView:document.getElementById("gameView"),
+resultView:document.getElementById("resultView"),
 
-const d=await fetch("../definitions.json")
-definitions=await d.json()
+resultWord:document.getElementById("resultWord"),
+resultFinal:document.getElementById("resultFinal"),
+resultDefinitions:document.getElementById("resultDefinitions"),
+resultScore:document.getElementById("resultScore"),
 
-nextWord()
+retryBtn:document.getElementById("retryBtn"),
+themeToggle:document.getElementById("themeToggle")
 
 }
 
-function formatRank(num){
 
-const thousands=Math.floor(num/1000)
-const rest=num%1000
+function randomInt(min,max){
+
+return Math.floor(Math.random()*(max-min))+min
+
+}
+
+function shuffle(arr){
+
+return arr.sort(()=>Math.random()-0.5)
+
+}
+
+function formatRank(index){
+
+const thousands=Math.floor(index/1000)
+const rest=index%1000
 
 return `${thousands}K <span>${rest}</span>`
 
 }
 
-function randomIndex(){
+function findEntry(word){
 
-return Math.floor(Math.random()*(MAX-MIN))+MIN
-
-}
-
-function nextWord(){
-
-document.getElementById("result").style.display="none"
-document.getElementById("game").style.display="block"
-
-let i=randomIndex()
-
-currentWord=words[i]
-
-document.getElementById("rank").innerHTML=formatRank(i)
-document.getElementById("word").innerText=currentWord
-
-generateOptions(currentWord)
+return STATE.definitions.find(
+d=>d.searched_word===word
+)
 
 }
 
-function findDefinition(word){
+function pickRandomDefinitions(exclude){
 
-return definitions.find(d=>d.searched_word===word)
+const pool = STATE.definitions
+.filter(d=>d.definition.length>0)
+.filter(d=>!exclude.includes(d.definition[0]))
 
-}
+const choices=[]
 
-function generateOptions(word){
+while(choices.length<3){
 
-let correct=findDefinition(word)
+const rand = pool[randomInt(0,pool.length)]
+const def = rand.definition[0]
 
-if(!correct){
-
-nextWord()
-return
-
-}
-
-let options=[correct.definition[0]]
-
-while(options.length<4){
-
-let rand=definitions[Math.floor(Math.random()*definitions.length)]
-
-let def=rand.definition[0]
-
-if(!options.includes(def)){
-
-options.push(def)
+if(!choices.includes(def)) choices.push(def)
 
 }
 
-}
-
-options=options.sort(()=>Math.random()-0.5)
-
-renderOptions(options,correct.definition)
+return choices
 
 }
 
-function renderOptions(options,correctDefs){
 
-const container=document.getElementById("options")
+function renderOptions(definitions){
 
-container.innerHTML=""
+UI.options.innerHTML=""
 
-options.forEach(def=>{
+definitions.forEach(def=>{
 
-let div=document.createElement("div")
+const btn=document.createElement("button")
 
-div.className="option"
-div.innerText=def
+btn.className="option"
+btn.textContent=def
 
-div.onclick=()=>choose(div,def,correctDefs)
+btn.addEventListener("click",()=>handleAnswer(btn,def))
 
-container.appendChild(div)
+UI.options.appendChild(btn)
 
 })
 
 }
 
-function choose(el,def,correctDefs){
+function handleAnswer(button,definition){
 
-let all=document.querySelectorAll(".option")
+const correctDefs = STATE.currentEntry.definition
+const allOptions=[...document.querySelectorAll(".option")]
 
-all.forEach(o=>o.onclick=null)
+allOptions.forEach(btn=>btn.disabled=true)
 
-if(correctDefs.includes(def)){
+if(correctDefs.includes(definition)){
 
-el.classList.add("correct")
+button.classList.add("correct")
 
-score++
-document.getElementById("score").innerText=score
+STATE.score++
+UI.score.textContent=STATE.score
 
-setTimeout(nextWord,900)
+setTimeout(loadNextWord,900)
 
 }else{
 
-el.classList.add("wrong")
+button.classList.add("wrong")
 
-all.forEach(o=>{
+allOptions.forEach(btn=>{
 
-if(correctDefs.includes(o.innerText)){
+if(correctDefs.includes(btn.textContent)){
 
-o.classList.add("correct")
+btn.classList.add("correct")
 
 }
 
 })
 
-setTimeout(showResult,1200)
+setTimeout(showResultScreen,1200)
 
 }
 
 }
 
-function showResult(){
 
-const entry=findDefinition(currentWord)
+function loadNextWord(){
 
-document.getElementById("game").style.display="none"
-document.getElementById("result").style.display="block"
+UI.resultView.hidden=true
+UI.gameView.hidden=false
 
-document.getElementById("resultWord").innerText=currentWord
+let index=randomInt(GAME_RANGE.min,GAME_RANGE.max)
+let word=STATE.words[index]
 
-document.getElementById("finalWord").innerText=entry.final_word
+let entry=findEntry(word)
 
-const defs=document.getElementById("definitions")
-defs.innerHTML=""
+if(!entry){
+loadNextWord()
+return
+}
 
-entry.definition.forEach(d=>{
+STATE.currentWord=word
+STATE.currentEntry=entry
 
-let div=document.createElement("div")
-div.innerHTML="• "+d
-defs.appendChild(div)
+UI.rank.innerHTML=formatRank(index)
+UI.word.textContent=word
+
+const correctDef = entry.definition[0]
+
+const wrongDefs = pickRandomDefinitions([correctDef])
+
+const options = shuffle([correctDef,...wrongDefs])
+
+renderOptions(options)
+
+}
+
+
+function showResultScreen(){
+
+const entry=STATE.currentEntry
+
+UI.gameView.hidden=true
+UI.resultView.hidden=false
+
+UI.resultWord.textContent=STATE.currentWord
+UI.resultFinal.textContent=entry.final_word
+
+UI.resultDefinitions.innerHTML=""
+
+entry.definition.forEach(def=>{
+
+const div=document.createElement("div")
+
+div.className="definition"
+div.textContent="• "+def
+
+UI.resultDefinitions.appendChild(div)
 
 })
 
-document.getElementById("finalScore").innerText=score
+UI.resultScore.textContent=STATE.score
 
-score=0
-document.getElementById("score").innerText=0
+STATE.score=0
+UI.score.textContent=0
 
 }
 
-function restart(){
+function restartGame(){
 
-nextWord()
+loadNextWord()
 
 }
 
@@ -467,7 +507,25 @@ document.body.classList.toggle("light")
 
 }
 
-init()
+async function loadData(){
+
+const [wordsRes,defRes]=await Promise.all([
+fetch("../words.json"),
+fetch("../definitions.json")
+])
+
+STATE.words=await wordsRes.json()
+STATE.definitions=await defRes.json()
+
+loadNextWord()
+
+}
+
+
+UI.retryBtn.addEventListener("click",restartGame)
+UI.themeToggle.addEventListener("click",toggleTheme)
+
+loadData()
 
 </script>
 
